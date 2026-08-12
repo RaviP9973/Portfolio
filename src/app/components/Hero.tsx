@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FiGithub, FiLinkedin, FiArrowDown } from "react-icons/fi";
 import { SiLeetcode } from "react-icons/si";
+import Image from "next/image";
 
 const roles = [
   "Full-Stack Developer",
@@ -43,154 +44,179 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center"
+      className="relative min-h-screen flex items-center overflow-hidden"
     >
-      {/* Gradient orbs */}
-      <div className="absolute inset-0 pointer-events-none z-0">
+      {/* ═══ Full-bleed profile photo — right side background ═══ */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5, delay: 0.2 }}
+        className="hero-photo-layer"
+      >
+        <Image
+          src="/profile.jpg"
+          alt="Ravi Prakash Pal"
+          fill
+          className="object-cover object-top"
+          priority
+          sizes="100vw"
+        />
+        {/* Dark gradient overlay to blend with background */}
+        <div className="hero-photo-overlay" />
+      </motion.div>
+
+      {/* ═══ Background Elements (Orbs & Grid) with bottom fade mask ═══ */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-[1]"
+        style={{
+          maskImage: 'linear-gradient(to bottom, black 0%, black 70%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 70%, transparent 100%)'
+        }}
+      >
+        {/* Subtle ambient orbs */}
         <div
-          className="absolute -top-40 -right-40 w-80 h-80 md:w-[500px] md:h-[500px] rounded-full opacity-20"
+          className="absolute -top-40 -right-40 w-80 h-80 md:w-[500px] md:h-[500px] rounded-full opacity-15"
           style={{
             background: "radial-gradient(circle, var(--accent-cyan) 0%, transparent 70%)",
             animation: "float 8s ease-in-out infinite",
           }}
         />
         <div
-          className="absolute -bottom-40 -left-40 w-80 h-80 md:w-[500px] md:h-[500px] rounded-full opacity-15"
+          className="absolute -bottom-40 -left-40 w-80 h-80 md:w-[500px] md:h-[500px] rounded-full opacity-10"
           style={{
             background: "radial-gradient(circle, var(--accent-purple) 0%, transparent 70%)",
             animation: "float 10s ease-in-out infinite reverse",
           }}
         />
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-60 h-60 md:w-[400px] md:h-[400px] rounded-full opacity-10"
+
+        {/* Grid background — only visible on left side */}
+        <div 
+          className="absolute inset-0 opacity-30" 
           style={{
-            background: "radial-gradient(circle, var(--accent-blue) 0%, transparent 70%)",
-            animation: "float 12s ease-in-out infinite",
+            backgroundImage: `
+              linear-gradient(to right, var(--glass-border) 1px, transparent 1px),
+              linear-gradient(to bottom, var(--glass-border) 1px, transparent 1px)
+            `,
+            backgroundSize: '4rem 4rem',
+            maskImage: 'radial-gradient(ellipse 60% 70% at 30% 50%, #000 0%, transparent 70%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 60% 70% at 30% 50%, #000 0%, transparent 70%)'
           }}
         />
       </div>
 
-      {/* Aesthetic Grid Background */}
-      <div 
-        className="absolute inset-0 pointer-events-none z-0 opacity-40" 
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, var(--glass-border) 1px, transparent 1px),
-            linear-gradient(to bottom, var(--glass-border) 1px, transparent 1px)
-          `,
-          backgroundSize: '4rem 4rem',
-          maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, #000 0%, transparent 70%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, #000 0%, transparent 70%)'
-        }}
-      />
+      {/* ═══ Text content — left side ═══ */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 pt-28 pb-32">
+        <div className="max-w-xl lg:max-w-2xl">
+          {/* Greeting Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-block mb-6"
+          >
+            <div className="flex items-center gap-3 px-5 py-2.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md shadow-lg">
+              <span className="w-2.5 h-2.5 rounded-full bg-accent-cyan shadow-[0_0_10px_rgba(0,242,254,0.8)] animate-pulse" />
+              <span className="text-text-secondary font-mono text-sm tracking-widest uppercase">Hello World, I am</span>
+            </div>
+          </motion.div>
 
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pt-24 pb-32">
-        {/* Greeting Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-block mb-6"
-        >
-          <div className="flex items-center gap-3 px-5 py-2.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md shadow-lg">
-            <span className="w-2.5 h-2.5 rounded-full bg-accent-cyan shadow-[0_0_10px_rgba(0,242,254,0.8)] animate-pulse" />
-            <span className="text-text-secondary font-mono text-sm tracking-widest uppercase">Hello World, I am</span>
-          </div>
-        </motion.div>
-
-        {/* Name */}
-        <motion.h1
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="text-6xl sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-tighter leading-[1.1] mb-8 relative z-10"
-        >
-          <div className="relative inline-block hover:scale-[1.02] transition-transform duration-500 cursor-default group">
-            {/* Glow Aura */}
-            <span className="absolute -inset-4 blur-3xl opacity-0 group-hover:opacity-30 bg-gradient-to-r from-accent-cyan via-accent-blue to-accent-purple rounded-full transition-opacity duration-500 z-0" />
-            
-            <span className="relative z-10 text-white drop-shadow-2xl">Ravi </span>
-            <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">Prakash</span>
-          </div>
-          <br />
-          <div className="relative inline-block hover:scale-[1.02] transition-transform duration-500 cursor-default mt-2 group">
+          {/* Name */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-black tracking-tighter leading-[1.05] mb-6 relative"
+          >
+            <span className="text-white drop-shadow-2xl">Ravi </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">Prakash</span>
+            <br />
             <span 
-              className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan via-accent-blue to-accent-purple"
-              style={{
-                filter: "drop-shadow(0 0 40px rgba(0, 242, 254, 0.5))"
-              }}
+              className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan via-accent-blue to-accent-purple"
+              style={{ filter: "drop-shadow(0 0 40px rgba(0, 242, 254, 0.4))" }}
             >
               Pal.
             </span>
-          </div>
-        </motion.h1>
+          </motion.h1>
 
-        {/* Typewriter Role */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-xl md:text-2xl text-text-secondary mb-10 h-10 flex items-center justify-center"
-        >
-          <span className="font-[family-name:var(--font-jetbrains)]">
-            {displayText}
-          </span>
-          <span className="ml-0.5 w-0.5 h-6 bg-accent-cyan inline-block animate-pulse" />
-        </motion.div>
+          {/* Typewriter Role */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex items-center gap-3 mb-10"
+          >
+            <span className="w-8 h-[2px] bg-accent-cyan rounded-full" />
+            <span className="text-lg md:text-xl text-text-secondary font-[family-name:var(--font-jetbrains)]">
+              {displayText}
+            </span>
+            <span className="w-0.5 h-6 bg-accent-cyan inline-block animate-pulse" />
+          </motion.div>
 
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.45 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
-        >
-          <a href="#projects" className="glow-btn text-base">
-            View My Work
-          </a>
-          <a href="#contact" className="outline-btn text-base">
-            Get in Touch
-          </a>
-        </motion.div>
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.45 }}
+            className="flex flex-wrap items-center gap-4 mb-10"
+          >
+            <a href="#projects" className="glow-btn text-base">
+              View My Work
+            </a>
+            <a href="#contact" className="outline-btn text-base">
+              Get in Touch
+            </a>
+          </motion.div>
 
-        {/* Social Links */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="flex items-center justify-center gap-5"
-        >
-          {[
-            {
-              icon: <FiGithub size={20} />,
-              href: "https://github.com/RaviP9973",
-              label: "GitHub",
-            },
-            {
-              icon: <FiLinkedin size={20} />,
-              href: "https://www.linkedin.com/in/ravi-prakash-261517290",
-              label: "LinkedIn",
-            },
-            {
-              icon: <SiLeetcode size={20} />,
-              href: "https://leetcode.com/u/rp031776/",
-              label: "LeetCode",
-            },
-          ].map((social) => (
-            <motion.a
-              key={social.label}
-              href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={social.label}
-              className="p-3 rounded-full border border-glass-border text-text-secondary hover:text-accent-cyan hover:border-accent-cyan/30 transition-all duration-300"
-              whileHover={{ scale: 1.15, y: -3 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {social.icon}
-            </motion.a>
-          ))}
-        </motion.div>
+          {/* Social Links */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="flex items-center gap-5"
+          >
+            {[
+              {
+                icon: <FiGithub size={20} />,
+                href: "https://github.com/RaviP9973",
+                label: "GitHub",
+              },
+              {
+                icon: <FiLinkedin size={20} />,
+                href: "https://www.linkedin.com/in/ravi-prakash-261517290",
+                label: "LinkedIn",
+              },
+              {
+                icon: <SiLeetcode size={20} />,
+                href: "https://leetcode.com/u/rp031776/",
+                label: "LeetCode",
+              },
+            ].map((social) => (
+              <motion.a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.label}
+                className="p-3 rounded-full border border-glass-border text-text-secondary hover:text-accent-cyan hover:border-accent-cyan/30 transition-all duration-300 backdrop-blur-sm"
+                whileHover={{ scale: 1.15, y: -3 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {social.icon}
+              </motion.a>
+            ))}
+          </motion.div>
+
+          {/* Open to Work badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+            className="inline-flex items-center gap-2 mt-8 px-4 py-2 rounded-full border border-green-500/20 bg-green-500/5 backdrop-blur-sm"
+          >
+            <span className="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.8)] animate-pulse" />
+            <span className="text-xs font-semibold text-green-400 tracking-wide">Open to Work</span>
+          </motion.div>
+        </div>
       </div>
 
       {/* Scroll indicator */}
@@ -198,7 +224,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
         <a href="#about" aria-label="Scroll to about section">
           <motion.div
